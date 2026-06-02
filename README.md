@@ -1,42 +1,40 @@
-<div align="center">
+<p align="center">
+  <img src="https://raw.githubusercontent.com/oramasearch/orama/refs/heads/main/misc/readme/orama-readme-hero-dark.png#gh-dark-mode-only" />
+  <img src="https://raw.githubusercontent.com/oramasearch/orama/refs/heads/main/misc/readme/orama-readme-hero-light.png#gh-light-mode-only" />
+</p>
+
+[![Skills CLI](https://img.shields.io/badge/npx-skills-blue?style=flat-square)](https://www.npmjs.com/package/skills)
+
+If you need more info, help, or want to provide general feedback on Orama, join the [Orama Slack channel](https://orama.to/slack)
 
 # Orama Agent Skills
 
-**A curated collection of AI agent skills for Claude Code and compatible agents, distributed by Orama.**
-
-[![Skills CLI](https://img.shields.io/badge/npx-skills-blue?style=flat-square)](https://www.npmjs.com/package/skills)
-[![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
-
-[Overview](#overview) • [Skills Catalog](#skills-catalog) • [Getting Started](#getting-started) • [Skill Anatomy](#skill-anatomy) • [Creating Skills](#creating-skills)
-
-</div>
-
-## Overview
+A curated collection of AI agent skills for Claude Code and compatible agents, distributed by Orama.
 
 Agent Skills are self-contained instruction sets that give AI coding agents specialized capabilities. Each skill defines a complete workflow — from persona construction to execution strategy — that an agent can follow to accomplish complex, multi-step tasks autonomously.
 
 This repository is designed for use with the [`skills` CLI](https://www.npmjs.com/package/skills). Install individual skills or the entire collection into your project, and your AI agent gains new abilities instantly.
 
-## Skills Catalog
+# Skills Catalog
 
 | Skill | Description |
 |-------|-------------|
 | _No skills yet_ | Add your first skill — see [Creating Skills](#creating-skills). |
 
-## Getting Started
+# Getting Started
 
-### Prerequisites
+## Prerequisites
 
 - [Node.js](https://nodejs.org/) >= 18
 - An AI agent that supports skills (e.g., [Claude Code](https://docs.anthropic.com/en/docs/claude-code))
 
-### Install a specific skill
+## Install a specific skill
 
 ```bash
 npx skills add oramasearch/agent-skills --skill <skill-name>
 ```
 
-### Install all skills
+## Install all skills
 
 ```bash
 npx skills add oramasearch/agent-skills --all
@@ -44,7 +42,7 @@ npx skills add oramasearch/agent-skills --all
 
 Once installed, skills are available to your AI agent automatically. Invoke them by describing a task that matches the skill's trigger.
 
-### Verify installation
+## Verify installation
 
 After installation, you should see the skill files in your project's skills directory and a `skills-lock.json` tracking installed skills:
 
@@ -60,7 +58,7 @@ After installation, you should see the skill files in your project's skills dire
 }
 ```
 
-## Skill Anatomy
+# Skill Anatomy
 
 Each skill follows a consistent structure:
 
@@ -76,7 +74,7 @@ The `SKILL.md` file is the entry point. Its YAML frontmatter defines the skill's
 > [!NOTE]
 > Reference files are loaded by the agent at runtime — they keep the main `SKILL.md` focused while providing depth on demand.
 
-## Creating Skills
+# Creating Skills
 
 Want to add a new skill to this collection? Each skill should:
 
@@ -96,3 +94,9 @@ description: Short description of what this skill does and when to use it.
 
 Instructions the agent follows...
 ```
+
+# License
+
+Orama Agent Skills is licensed under the [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0) license.
+
+<img referrerpolicy="no-referrer-when-downgrade" src="https://static.scarf.sh/a.png?x-pxid=16782f89-15fb-4e03-8e9c-2a06106542f7" />
