@@ -63,26 +63,29 @@ After installation, you should see the skill files in your project's skills dire
 Each skill follows a consistent structure:
 
 ```
-skill-name/
+skill-name/                # one directory per skill, at the repo root
   SKILL.md          # Skill definition (required) — YAML frontmatter + instructions
-  *.md              # Bundled reference docs (optional)
-  *.sh              # Helper scripts (optional)
+  README.md         # Human-browsable doc for the skill (required)
+  references/       # Bundled reference docs loaded on demand (optional)
+  scripts/          # Helper scripts (optional)
+  assets/           # Templates / images (optional)
 ```
 
-The `SKILL.md` file is the entry point. Its YAML frontmatter defines the skill's `name` and `description` (used for trigger matching), followed by the full instructions the agent will follow.
+The `SKILL.md` file is the entry point installed by `npx skills`. Its YAML frontmatter defines the skill's `name` and `description` (used for trigger matching), followed by the full instructions the agent will follow. The folder name matches the frontmatter `name`.
 
 > [!NOTE]
 > Reference files are loaded by the agent at runtime — they keep the main `SKILL.md` focused while providing depth on demand.
 
 # Creating Skills
 
-Want to add a new skill to this collection? Each skill should:
+Agents adding skills to this repo follow [`CLAUDE.md`](CLAUDE.md) — it is the authoritative guide for layout, the `npx skills` discovery rules, and the per-skill checklist. In short, each skill should:
 
 1. **Solve a specific, repeatable problem** — skills work best when they encode a well-defined workflow
 2. **Be self-contained** — include all instructions, templates, and scripts the agent needs
 3. **Use rich frontmatter** — write a descriptive `description` field with trigger phrases so agents know when to activate the skill
-4. **Include bundled resources** — break complex workflows into reference docs rather than stuffing everything into `SKILL.md`
-5. **Be production-oriented** — skills should produce real, working output — not drafts or placeholders
+4. **Carry a `README.md`** — a human-browsable doc with the install line, what it does, bundled files, and requirements
+5. **Include bundled resources** — break complex workflows into reference docs rather than stuffing everything into `SKILL.md`
+6. **Be production-oriented** — skills should produce real, working output — not drafts or placeholders
 
 ```yaml
 ---
