@@ -19,7 +19,7 @@ This repository is designed for use with the [`skills` CLI](https://www.npmjs.co
 
 | Skill | Description |
 |-------|-------------|
-| _No skills yet_ | Add your first skill — see [Creating Skills](#creating-skills). |
+| [orama-cloud-cli](./orama-cloud-cli/) | Drive the Orama Cloud CLI (`orama`) to provision an account, index a CSV or `postgres://` source, and run search — fully from an agent context, no dashboard, no human in the loop. Covers the locked `--json` / `--agent` contract, the frozen exit-code table, env resolution, search modes, and cold-start auto-signup. |
 
 # Getting Started
 
