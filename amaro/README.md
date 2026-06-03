@@ -34,24 +34,35 @@ No manifest → desktop isn't running; you're cloud-REST-only.
 
 ## Connect a remote agent (tunnel)
 
-The MCP server binds to loopback only, so an agent on another machine can't reach it directly — put a public tunnel in front of the local port. The manifest bearer token is still required on every request; the tunnel adds reachability, not auth.
+The MCP server is loopback-only — front it with a public tunnel so a remote agent can reach it (the manifest bearer token is still required).
 
 **Let the skill do it.** Ask the agent to "expose the Amaro MCP server with a tunnel" and it follows the "Expose the MCP server to a remote agent" recipe in `SKILL.md` — it reads the port from the manifest and starts the tunnel for you.
 
-**Or set it up manually.** First get the local port:
+**Or set it up manually** (default port `57552`):
+
+cloudflared quick tunnel — no account, ephemeral `*.trycloudflare.com`:
 
 ```sh
-MANIFEST=~/Library/Application\ Support/com.amaro.desktop/mcp-server.json
-PORT=$(jq -r .url "$MANIFEST" | sed -E 's#.*:([0-9]+)/.*#\1#')   # e.g. 57552
+brew install cloudflared
+cloudflared tunnel --url http://127.0.0.1:57552
 ```
 
-Then pick one tunnel. The remote MCP URL is the printed host + `/mcp`.
+ngrok — one-time authtoken, random `*.ngrok-free.app`:
 
-| Method | Account / domain | Stability | Commands |
-|---|---|---|---|
-| **cloudflared** quick tunnel | none | ephemeral `*.trycloudflare.com` | `brew install cloudflared`<br>`cloudflared tunnel --url http://127.0.0.1:$PORT` |
-| **ngrok** | one-time authtoken | random `*.ngrok-free.app` per session | `brew install ngrok`<br>`ngrok config add-authtoken <YOUR_NGROK_AUTHTOKEN>`<br>`ngrok http $PORT` |
-| **cftunn** | your Cloudflare domain | stable hostname, survives restarts | `brew install cloudflared`<br>`cloudflared tunnel login`<br>`curl -fsSL https://raw.githubusercontent.com/thatjuan/cftunn/main/install.sh \| bash`<br>`cftunn $PORT amaro.example.com` |
+```sh
+brew install ngrok
+ngrok config add-authtoken <YOUR_NGROK_AUTHTOKEN>
+ngrok http 57552
+```
+
+cftunn — your Cloudflare domain, stable hostname:
+
+```sh
+brew install cloudflared
+cloudflared tunnel login
+curl -fsSL https://raw.githubusercontent.com/thatjuan/cftunn/main/install.sh | bash
+cftunn 57552 amaro.example.com
+```
 
 Full notes (auth scopes, what each prints) live under "Expose the MCP server to a remote agent" in `SKILL.md`.
 
