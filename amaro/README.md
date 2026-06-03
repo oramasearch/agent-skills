@@ -10,9 +10,9 @@ npx skills add oramasearch/agent-skills --skill amaro
 
 ## What it does
 
-`amaro` is a headless Rust binary that drives Amaro over three transports — cloud REST (`services/teams`), local MCP (the desktop's inbound server), and Tauri-IPC (a running desktop's UDS) — auto-selecting one based on whether the desktop is running. This skill gives an agent the operating surface:
+`amaro` is a headless Rust binary that drives Amaro over three transports — cloud REST (the teams service), local MCP (the desktop's inbound server), and Tauri-IPC (a running desktop's UDS) — auto-selecting one based on whether the desktop is running. This skill gives an agent the operating surface:
 
-- **Bootstrap** — detect a running desktop via its manifest, find or build the CLI (`just cli`, `just cli-install`), or skip the CLI and hit the HTTP MCP endpoint directly with the manifest's URL + token.
+- **Bootstrap** — detect a running desktop via its manifest, locate the `amaro` binary on `PATH`, or skip the CLI and hit the HTTP MCP endpoint directly with the manifest's URL + token.
 - **The locked output contract** — `--json` / `--quiet` / `--no-color`, the versioned `{"v": 1, "data" | "error"}` envelope, and NDJSON streaming subcommands.
 - **Eight namespaces** — `auth`, `app`, `connector`, `cache`, `chat`, `local`, `telemetry`, `lifecycle`, each with its own reference file.
 - **Transport-aware guidance** — when an op is desktop-local (`LocalOnly`), when it needs the `destructive` scope, and when to pick `--transport rest|ipc|mcp` explicitly.
@@ -37,4 +37,4 @@ Mentions of the `amaro` CLI, "amaro app", "drive amaro", "amaro headless", "amar
 
 ## Requirements
 
-A running Amaro desktop and/or a reachable teams service, plus the `amaro` binary on the host (or the ability to build it from the amaro module via `just cli`, or to call the desktop's HTTP MCP endpoint directly). The skill itself is documentation and assumes the agent can shell out. Several surfaces are documented-but-partial — see the "Maturity notes" in `SKILL.md`.
+A running Amaro desktop and/or a reachable teams service, plus the `amaro` binary on the host (or the ability to call the desktop's HTTP MCP endpoint directly using the manifest's URL + token). The skill itself is documentation and assumes the agent can shell out. Several surfaces are documented-but-partial — see the "Maturity notes" in `SKILL.md`.
