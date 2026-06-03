@@ -52,6 +52,11 @@ than this file does.
      re-run.
    - Skip the CLI entirely and hit the HTTP MCP endpoint directly
      using the URL + token from the manifest (see next section).
+     ⚠️ If you're running inside a sandboxed agent (Codex et al.) and
+     the authenticated call fails while an unauthenticated probe to the
+     same port works, that's the sandbox — not the URL/token. See
+     [Sandbox gotcha](#sandbox-gotcha--authenticated-loopback-may-be-blocked-even-when-probes-pass)
+     before re-checking auth.
 
 3. **Then `amaro status --json`** to confirm transport + env + auth.
 4. **Discover the surface** — `amaro --help`. Then drill in with
@@ -103,6 +108,34 @@ curl -s -X POST "$URL" -H "Authorization: Bearer $TOKEN" \
 Same tool surface the CLI uses — just lower-level. Use this when the
 CLI isn't installed and you don't want to build it, or when you need
 to wire the desktop into another tool that already speaks MCP.
+
+### Sandbox gotcha — authenticated loopback may be blocked even when probes pass
+
+Inside a sandboxed agent (Codex's sandbox, and similar restricted
+network policies), the **authenticated** `POST` to the MCP URL above can
+be blocked or dropped while an **unauthenticated probe to the same
+host:port still succeeds**. A bare reachability check (`curl
+http://127.0.0.1:PORT/`, a TCP connect, a GET with no body) goes through;
+the real `initialize` call with the `Authorization: Bearer` header,
+JSON-RPC body, and event-stream `Accept` does not. The manifest URL and
+token are correct — the sandbox is the blocker.
+
+This reads like an endpoint or auth problem (wrong URL, stale token, 401)
+but is not. Don't burn time re-checking the manifest, re-minting the
+token, or second-guessing the port. Symptoms that point at the sandbox,
+not at auth:
+
+- the unauthenticated probe to the same port works, the authenticated
+  POST hangs / connection-refused / times out;
+- no `401`/`403` JSON body comes back — the request never reaches the
+  server, versus a real auth failure which returns a JSON-RPC error.
+
+When you see this, **escalate to the host's MCP tooling instead of
+raw `curl`**: invoke the desktop's MCP server through the agent's own
+configured MCP transport (the path that's allowed to reach loopback),
+or run the call outside the sandbox / with network egress to localhost
+granted. The `amaro` CLI itself may also be permitted where raw `curl`
+is not.
 
 ## Namespaces
 
