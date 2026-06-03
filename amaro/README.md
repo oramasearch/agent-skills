@@ -10,6 +10,8 @@ npx skills add oramasearch/agent-skills --skill amaro
 
 Installs the skill into your agent. The interactive picker uses **↑/↓** to move, **Space** to toggle an agent (Claude Code, Cursor, …), **Enter** to confirm. Non-interactive: add `--agent claude -y` (or `--all` for every skill + agent). Needs Node ≥ 18.
 
+New here? **[GETTING-STARTED.md](GETTING-STARTED.md)** — a no-fluff command guide: prereqs → skill → desktop → verify.
+
 ## What it does
 
 `amaro` is a headless Rust binary that drives Amaro over three transports — cloud REST (the teams service), local MCP (the desktop's inbound server), and Tauri-IPC (a running desktop's UDS) — auto-selecting one based on whether the desktop is running. This skill gives an agent the operating surface:
@@ -27,6 +29,7 @@ Mentions of the `amaro` CLI, "amaro app", "drive amaro", "amaro headless", "amar
 
 | File | Purpose |
 |------|---------|
+| `GETTING-STARTED.md` | No-fluff command guide — prereqs → skill → desktop → verify. |
 | `SKILL.md` | Router — transports, bootstrap (manifest + CLI + raw MCP), output contract, namespace table, common workflows, maturity notes. |
 | `references/auth.md` | Login, token precedence, scoped-token minting (`read`/`write`/`ui`/`destructive`/`observe`/`full`). |
 | `references/app.md` | Data apps — list / get / create / run+watch / status / pin / delete / export. |
