@@ -11,15 +11,26 @@ agent-skills/
   <skill-name>/                # one directory per skill, at the repo root
     SKILL.md                   # required — the installable skill definition
     README.md                  # required — human-browsable doc for the skill
+    install.sh                 # required — this skill's standalone curl|sh installer
     references/                # optional — bundled reference docs loaded on demand
     scripts/                   # optional — bundled helper scripts
     assets/                    # optional — bundled templates / images
+  install.sh                   # repo-wide installer — runs each <skill>/install.sh
   README.md                    # catalog + install instructions
   CLAUDE.md                    # this file
   skills-lock.json             # lock for skills installed FROM elsewhere (see below)
   .claude/skills/              # consumer-style install target — leave empty
   .agents/skills/              # consumer-style install target — leave empty
 ```
+
+### The `curl | sh` installers
+
+Two tiers, no Node (the simple alternative to `npx skills`):
+
+- **`<skill>/install.sh`** — each skill's own standalone installer. Self-contained: downloads the repo tarball (or copies a local tree via `--from`), then upserts that one skill into the consumer's `./.claude/skills/<skill>/` (Claude Code) **and** `./.agents/skills/<skill>/` (Codex / compatible). Curl-able on its own: `curl -fsSL .../main/<skill>/install.sh | sh`. The body is **identical across skills except the `SKILL="<name>"` line** near the top — copy an existing one when adding a skill. Enforces the generic-path guard (refuses `$HOME` / `/` / system dirs / standard home subfolders unless `--force`, exit 3) before any `rm -rf`, and strips its own `install.sh` out of the installed copy.
+- **Root `install.sh`** — downloads the repo once and runs **each `<skill>/install.sh`** against that shared tree (via `--from`), so a non-zero per-skill exit propagates straight out. `--skills a,b` subsets; `--list` enumerates; `--dir` / `--ref` / `--force` pass through. It discovers skills as top-level dirs that have **both** `SKILL.md` and `install.sh`.
+
+When run by `npx skills` (not the curl path), `<skill>/install.sh` is bundled into the skill dir like any other file and lands in the consumer's `.claude/skills/<skill>/install.sh` — harmless; the curl installers strip it.
 
 Skills live at the **repo root** as `<skill-name>/`. That is the layout `npx skills` discovers without extra flags (see below) and the one every existing skill follows.
 
@@ -49,17 +60,18 @@ curl -fsSL https://raw.githubusercontent.com/oramasearch/agent-skills/main/insta
 curl -fsSL .../install.sh | sh -s -- --skills amaro,orama-cloud-cli                                              # subset
 ```
 
-`install.sh` enumerates skills with the same discovery-root #1 rule (top-level `<dir>/SKILL.md`, dotdirs excluded), so any skill added per the checklist below is installable by both paths with no extra wiring. It guards `rm -rf` behind a `^[a-z0-9-]+$` name check — the lowercase/digits/hyphens folder-naming rule below is load-bearing for the installer, not just cosmetic.
+See [The `curl | sh` installers](#the-curl--sh-installers) above for how `<skill>/install.sh` and the root `install.sh` fit together. A skill is installable by both the curl path and `npx skills` once it has a top-level `<dir>/SKILL.md`; the curl path additionally needs `<dir>/install.sh`.
 
 ## Adding a skill — checklist
 
 1. Create `<skill-name>/` at the repo root. Folder name: lowercase letters, digits, hyphens; no leading/trailing hyphen; verb-led where natural (`generate-docs`, `gh-address-comments`).
 2. Write `<skill-name>/SKILL.md` (see requirements below). Set frontmatter `name` equal to the folder name.
 3. Write `<skill-name>/README.md` (see requirements below).
-4. Add bundled resources under `references/` / `scripts/` / `assets/` only as needed. Keep `SKILL.md` lean; push depth into `references/`.
-5. Add a catalog row in the root [`README.md`](README.md) `Skills Catalog` table, and a short section describing the skill and its bundled files.
-6. Verify discovery before committing (below).
-7. Commit. Use the [`commitpush`](https://github.com/oramasearch/agent-skills) discipline; one skill per commit where practical.
+4. Add `<skill-name>/install.sh`: **copy an existing skill's `install.sh` and change only the `SKILL="<name>"` line** (and the skill name in the header comment). The body must stay byte-identical across skills — verify with `diff` ignoring the `SKILL=` / header / curl-URL lines. `chmod +x` it.
+5. Add bundled resources under `references/` / `scripts/` / `assets/` only as needed. Keep `SKILL.md` lean; push depth into `references/`.
+6. Add a catalog row in the root [`README.md`](README.md) `Skills Catalog` table, and a short section describing the skill and its bundled files. Point the per-skill README's curl line at `.../main/<skill-name>/install.sh`.
+7. Verify discovery before committing (below).
+8. Commit. Use the [`commitpush`](https://github.com/oramasearch/agent-skills) discipline; one skill per commit where practical.
 
 ## SKILL.md requirements
 
