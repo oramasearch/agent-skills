@@ -24,7 +24,25 @@ This repository is designed for use with the [`skills` CLI](https://www.npmjs.co
 
 # Getting Started
 
+## Quick install (no Node)
+
+The fastest path — installs **every** skill for **both** Claude Code (`.claude/skills/`) and Codex / compatible agents (`.agents/skills/`) into the current project, with no Node and no flags to learn:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/oramasearch/agent-skills/main/install.sh | sh
+```
+
+Install only some skills:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/oramasearch/agent-skills/main/install.sh | sh -s -- --skills amaro,orama-cloud-cli
+```
+
+Other options: `--dir <path>` (install into a different project root), `--ref <branch|tag|sha>`, `--list` (show available skills), `--help`. Re-running upserts each skill in place. This is the no-frills alternative to the `npx skills` flow below — see [`install.sh`](install.sh).
+
 ## Prerequisites
+
+> The `npx skills` flow below needs Node; the [`curl … | sh`](#quick-install-no-node) installer above does not.
 
 - [Node.js](https://nodejs.org/) >= 18
 - An AI agent that supports skills (e.g., [Claude Code](https://docs.anthropic.com/en/docs/claude-code))

@@ -42,6 +42,15 @@ npx skills add oramasearch/agent-skills --all                  # every skill
 
 The `--skill <name>` filter matches the frontmatter `name` (case-insensitive) or the folder name. **Keep the folder name identical to the frontmatter `name`** so both forms resolve.
 
+Or with the bundled Node-free installer ([`install.sh`](install.sh)), which downloads the repo tarball and copies each top-level `<skill>/` into the consumer's `.claude/skills/` **and** `.agents/skills/`:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/oramasearch/agent-skills/main/install.sh | sh                       # every skill, both agents
+curl -fsSL .../install.sh | sh -s -- --skills amaro,orama-cloud-cli                                              # subset
+```
+
+`install.sh` enumerates skills with the same discovery-root #1 rule (top-level `<dir>/SKILL.md`, dotdirs excluded), so any skill added per the checklist below is installable by both paths with no extra wiring. It guards `rm -rf` behind a `^[a-z0-9-]+$` name check — the lowercase/digits/hyphens folder-naming rule below is load-bearing for the installer, not just cosmetic.
+
 ## Adding a skill — checklist
 
 1. Create `<skill-name>/` at the repo root. Folder name: lowercase letters, digits, hyphens; no leading/trailing hyphen; verb-led where natural (`generate-docs`, `gh-address-comments`).
