@@ -13,22 +13,22 @@ Non-interactive: add `--agent claude -y` (or `--all`). Needs Node ≥ 18. See **
 ## FAQ
 
 **What does it use?**
-The `amaro` CLI (a headless Rust binary), or `curl` + `jq` against the desktop's HTTP-MCP endpoint. Talks to a running Amaro desktop (manifest / IPC / local-MCP) or a cloud teams service (REST).
+The `amaro` CLI, or `curl` + `jq` against the desktop's HTTP-MCP endpoint.
 
 **What do I need to use it?**
-Either the `amaro` binary on `PATH`, or `curl` + `jq` to hit the manifest's MCP URL — plus a running desktop and/or teams-service credentials. The skill itself is just docs, no runtime deps.
+The `amaro` binary on `PATH` (or `curl` + `jq`), plus a running desktop and/or teams-service credentials.
 
 **What's installed, and where?**
-Only docs — `SKILL.md`, `README.md`, `references/*.md`. Project-level: `.claude/skills/amaro/`. User-level (`-g`): `~/.claude/skills/amaro/`. Tracked in `skills-lock.json`. No binary, no build, no Rust toolchain.
+Only docs, into `.claude/skills/amaro/` (`~/.claude/skills/amaro/` with `-g`). No binary, no build.
 
 **Prereqs to install?**
-Node ≥ 18 and `npx`. Nothing else.
+Node ≥ 18 and `npx`.
 
 **What commands does it run?**
-Stats the desktop manifest, then `amaro status|app|connector|chat|local|telemetry|lifecycle …` — optionally `curl` to the MCP endpoint. Passes `--json` when acting on output.
+`amaro status|app|connector|chat|local|telemetry|lifecycle …`, optionally `curl` to the MCP endpoint.
 
 **What permissions are needed?**
-Shell access + read the manifest file. Auth is a bearer token via `amaro auth login` or `$AMARO_TOKEN`. Destructive ops (`delete` / `reset` / `lifecycle quit`) require `--yes` plus the `destructive` token scope.
+Shell access and manifest read. Destructive ops (`delete` / `reset` / `lifecycle quit`) need `--yes` plus the `destructive` token scope.
 
 **Already installed?**
 Re-run `add`, or `npx skills update amaro`. Remove with `npx skills remove amaro`.
