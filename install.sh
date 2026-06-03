@@ -28,6 +28,10 @@ usage() {
   cat <<'EOF'
 Install Orama agent skills into the current project.
 
+Run this from the dedicated folder where you work with your coding agent
+(e.g. ~/code/my-project) — NOT your home directory or a generic system path.
+It writes .claude/skills/ and .agents/skills/ into the current directory.
+
 Usage:
   curl -fsSL https://raw.githubusercontent.com/oramasearch/agent-skills/main/install.sh | sh
   curl -fsSL .../install.sh | sh -s -- [options]
