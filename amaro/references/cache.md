@@ -5,10 +5,11 @@ description: Inspect Amaro's cache routing-tier badge and saved-time signal. Use
 # amaro cache — routing-tier + savings
 
 The cache namespace surfaces the routing-tier badge and the
-saved-time signal that the cache-engine common interface produces.
-Until that trait lands and the engines (OramaCore-based and GraphRAG)
-plumb through it, this namespace returns descriptive stubs explaining
-where to look.
+saved-time signal that `amaro#962` (cache-engine common interface)
+produces. Until that trait lands and the engines (OramaCore-based
+[`amaro#757`](https://github.com/oramasearch/amaro/pull/757) and
+GraphRAG) plumb through it, this namespace returns descriptive stubs
+explaining where to look.
 
 ## What's here
 
@@ -46,7 +47,8 @@ amaro cache savings --app-id <id> --json
 ```
 
 Wall-clock time saved versus the cold-run alternative — the signal
-that ships as a UI badge.
+[`amaro#656`](https://github.com/oramasearch/amaro/issues/656) ships
+as a UI badge.
 
 ## Tier for a single turn / run
 

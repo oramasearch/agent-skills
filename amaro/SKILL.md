@@ -48,11 +48,11 @@ than this file does.
 
 2. **Is the `amaro` CLI installed?** — `command -v amaro`. If missing,
    you have three zero-friction options:
-   - `just cli <args>` from the amaro module runs the CLI from source
+   - `just cli <args>` from `modules/amaro` runs the CLI from source
      without installing it on `PATH`.
-   - `just cli-install` (in the amaro module) builds + installs to
+   - `just cli-install` (in `modules/amaro`) builds + installs to
      `~/.cargo/bin/amaro`. Same as
-     `cargo install --path crates/amaro-cli`.
+     `cd modules/amaro && cargo install --path crates/amaro-cli`.
    - Skip the CLI entirely and hit the HTTP MCP endpoint directly
      using the URL + token from the manifest (see next section).
 
@@ -115,7 +115,7 @@ to wire the desktop into another tool that already speaks MCP.
 | `amaro auth` | login / logout / whoami / mint scoped tokens | [auth.md](references/auth.md) |
 | `amaro app` | data apps — list / get / run / status / create / delete | [app.md](references/app.md) |
 | `amaro connector` | data sources — list / add / test / reprofile / delete | [connector.md](references/connector.md) |
-| `amaro cache` | routing-tier badge + saved-time signal | [cache.md](references/cache.md) |
+| `amaro cache` | routing-tier badge + saved-time signal (per `amaro#962`) | [cache.md](references/cache.md) |
 | `amaro chat` | sessions — list / send / replay / history | [chat.md](references/chat.md) |
 | `amaro local` | drive the running desktop (screenshot, navigate, snapshot) | [local.md](references/local.md) |
 | `amaro telemetry` | tail envelopes, cost meter, interpret a turn, snapshot | [telemetry.md](references/telemetry.md) |
@@ -168,7 +168,8 @@ amaro telemetry tail --envelope-kind chat.llm.response --last 20 --json
 amaro telemetry interpret <turn_id> --json
 ```
 
-Returns the Performance Interpreter's analysis for the given turn.
+Returns the Performance Interpreter's analysis ([`amaro#685`](https://github.com/oramasearch/amaro/pull/685))
+for the given turn.
 
 ## When to escalate vs. ask the user
 
@@ -194,3 +195,11 @@ these as documented-but-partial:
   currently accepts `--token` / `$AMARO_TOKEN`.
 - `amaro connector reprofile` is not yet exposed over MCP; it returns a
   clean "use REST" error under `--transport mcp`.
+
+## Where to read more
+
+- ADR: [`docs/decisions/headless-cli.md`](https://github.com/oramasearch/amaro/blob/main/docs/decisions/headless-cli.md) (in amaro repo)
+- Research: [`docs/discussions/wrangler-architecture-research.md`](https://github.com/oramasearch/amaro/blob/main/docs/discussions/wrangler-architecture-research.md)
+- Epic: [`amaro#992`](https://github.com/oramasearch/amaro/issues/992)
+- Runbook: [`docs/runbooks/headless-amaro-cli.md`](https://github.com/oramasearch/amaro/blob/main/docs/runbooks/headless-amaro-cli.md) (copy-paste configs for Claude Desktop / Cursor / Claude Code / shell / browser extension)
+- Canonical docs subsystem: [`amaro-docs/docs/modules/amaro/headless/`](https://github.com/oramasearch/amaro-docs/tree/main/docs/modules/amaro/headless)
