@@ -12,7 +12,7 @@ npx skills add oramasearch/agent-skills --skill amaro
 
 Picker: **↑/↓** move, **Space** toggle agent, **Enter** confirm. Non-interactive: add `--agent claude -y` (or `--all`).
 
-**2. Launch the Amaro desktop.** On launch it writes an MCP manifest (mode 0600) carrying the HTTP-MCP `url`, bearer `token`, `pid`, `ipc_socket`, and granted `scopes`:
+**2. Launch the Amaro desktop.** It writes an MCP manifest:
 
 | Platform | Manifest path |
 |---|---|
