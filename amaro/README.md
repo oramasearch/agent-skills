@@ -47,9 +47,4 @@ Shell access and manifest read. Destructive ops (`delete` / `reset` / `lifecycle
 **Already installed?**\
 Re-run `add`, or `npx skills update amaro`. Remove with `npx skills remove amaro`.
 
-## Going deeper
-
-- [`SKILL.md`](SKILL.md) — router: transports, bootstrap, output contract, namespaces, workflows.
-- [`references/`](references/) — per-namespace deep-dives (`auth`, `app`, `connector`, `cache`, `chat`, `local`, `telemetry`, `lifecycle`).
-
 > Several surfaces are documented-but-partial — see "Maturity notes" in `SKILL.md`.
