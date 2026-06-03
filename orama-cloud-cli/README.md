@@ -9,7 +9,7 @@ Run from your project folder (not `$HOME`). Two options.
 `curl | sh` — no Node, installs for both Claude Code and Codex:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/oramasearch/agent-skills/main/install.sh | sh -s -- --skills orama-cloud-cli
+curl -fsSL https://raw.githubusercontent.com/oramasearch/agent-skills/main/orama-cloud-cli/install.sh | sh
 ```
 
 `npx skills` (Node ≥ 18) — interactive picker, writes a `skills-lock.json`:

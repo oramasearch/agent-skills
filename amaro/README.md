@@ -9,7 +9,7 @@ Teaches an AI agent to drive a running **Amaro** instance from the shell.
 `curl | sh` — no Node, installs for both Claude Code and Codex:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/oramasearch/agent-skills/main/install.sh | sh -s -- --skills amaro
+curl -fsSL https://raw.githubusercontent.com/oramasearch/agent-skills/main/amaro/install.sh | sh
 ```
 
 `npx skills` (Node ≥ 18) — interactive picker, writes a `skills-lock.json`:

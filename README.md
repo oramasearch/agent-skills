@@ -38,7 +38,7 @@ Two ways to install — pick either. Both drop the same skill bundles into `./.c
 
 ## Option A — `curl | sh` (no Node)
 
-The no-frills path. No Node, no flags to learn. Installs **every** skill for **both** agents by default:
+The no-frills path. No Node, no flags to learn. The root [`install.sh`](install.sh) downloads the repo once and runs **each skill's own installer** — installing **every** skill for **both** agents by default:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/oramasearch/agent-skills/main/install.sh | sh
@@ -50,7 +50,13 @@ Install only some skills:
 curl -fsSL https://raw.githubusercontent.com/oramasearch/agent-skills/main/install.sh | sh -s -- --skills amaro,orama-cloud-cli
 ```
 
-Other options: `--dir <path>` (target a different project root), `--ref <branch|tag|sha>`, `--list` (show available skills), `--help`. Re-running upserts each skill in place. Source: [`install.sh`](install.sh).
+Install **a single skill** by running just that skill's installer (each skill ships its own `<skill>/install.sh`):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/oramasearch/agent-skills/main/amaro/install.sh | sh
+```
+
+Other options: `--dir <path>` (target a different project root), `--ref <branch|tag|sha>`, `--list` (show available skills), `--force`, `--help`. Re-running upserts each skill in place.
 
 ## Option B — `npx skills` (needs Node ≥ 18)
 
