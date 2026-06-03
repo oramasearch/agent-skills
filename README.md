@@ -24,24 +24,58 @@ This repository is designed for use with the [`skills` CLI](https://www.npmjs.co
 
 # Getting Started
 
-## Prerequisites
+> **⚠️ Run the install from your project folder — not your home directory.**
+> Both installers below write a `.claude/skills/` and `.agents/skills/` folder into the **current working directory**. `cd` into the dedicated folder where you actually run your coding agent first (e.g. `~/code/my-project`). Do **not** run it from `~`, `/`, or any generic system path — that scatters skill files across your home directory and makes them apply to every session indiscriminately.
+>
+> ```bash
+> mkdir -p ~/code/my-project && cd ~/code/my-project   # a real project folder
+> # …then run one of the installers below
+> ```
+>
+> The `curl | sh` installer **enforces this** — it aborts if you run it from `$HOME`, `/`, a system directory, or a standard home subfolder (Desktop/Documents/Downloads/…), and suggests a dedicated folder. Override with `--force` if you really mean it.
+
+Two ways to install — pick either. Both drop the same skill bundles into `./.claude/skills/<name>/` (Claude Code) and `./.agents/skills/<name>/` (Codex / compatible agents) in the current directory.
+
+## Option A — `curl | sh` (no Node)
+
+The no-frills path. No Node, no flags to learn. Installs **every** skill for **both** agents by default:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/oramasearch/agent-skills/main/install.sh | sh
+```
+
+Install only some skills:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/oramasearch/agent-skills/main/install.sh | sh -s -- --skills amaro,orama-cloud-cli
+```
+
+Other options: `--dir <path>` (target a different project root), `--ref <branch|tag|sha>`, `--list` (show available skills), `--help`. Re-running upserts each skill in place. Source: [`install.sh`](install.sh).
+
+## Option B — `npx skills` (needs Node ≥ 18)
+
+The [`skills` CLI](https://www.npmjs.com/package/skills). Adds a `skills-lock.json` tracking what's installed (see [Verify installation](#verify-installation)).
+
+Prerequisites:
 
 - [Node.js](https://nodejs.org/) >= 18
 - An AI agent that supports skills (e.g., [Claude Code](https://docs.anthropic.com/en/docs/claude-code))
 
-## Install a specific skill
+Install one skill:
 
 ```bash
 npx skills add oramasearch/agent-skills --skill <skill-name>
 ```
 
-## Install all skills
+Install all skills:
 
 ```bash
 npx skills add oramasearch/agent-skills --all
 ```
 
-Once installed, skills are available to your AI agent automatically. Invoke them by describing a task that matches the skill's trigger.
+---
+
+Once installed (either way), skills are available to your AI agent automatically. Invoke them by describing a task that matches the skill's trigger.
 
 ## Verify installation
 
