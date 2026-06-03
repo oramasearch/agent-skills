@@ -1,6 +1,6 @@
 # amaro
 
-Teaches an AI agent to drive a running **Amaro** instance from the shell — inspect/run data apps, manage connectors, drive the live desktop UI, stream telemetry, and control lifecycle — via the headless `amaro` CLI (or raw HTTP-MCP); triggers on `amaro` CLI mentions or any of those tasks.
+Teaches an AI agent to drive a running **Amaro** instance from the shell.
 
 ## Setup
 
