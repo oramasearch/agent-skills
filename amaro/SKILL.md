@@ -137,6 +137,68 @@ or run the call outside the sandbox / with network egress to localhost
 granted. The `amaro` CLI itself may also be permitted where raw `curl`
 is not.
 
+## Expose the MCP server to a remote agent (tunnel)
+
+The MCP server binds to loopback (`127.0.0.1:<port>`), so an agent on
+another machine can't reach it directly. Put a public tunnel in front
+of the local port. The bearer `token` from the manifest is **still
+required** on every request — the tunnel adds reachability, not auth.
+
+First grab the port the desktop is listening on:
+
+```sh
+MANIFEST=~/Library/Application\ Support/com.amaro.desktop/mcp-server.json
+PORT=$(jq -r .url "$MANIFEST" | sed -E 's#.*:([0-9]+)/.*#\1#')   # e.g. 57552
+TOKEN=$(jq -r .token "$MANIFEST")
+```
+
+The remote agent points at `https://<tunnel-host>/mcp` with
+`Authorization: Bearer $TOKEN`. Pick one tunnel:
+
+### Option A — cloudflared quick tunnel (fastest, no account, ephemeral URL)
+
+No login, no domain. Prints a random `*.trycloudflare.com` URL that
+lives until you kill the process.
+
+```sh
+brew install cloudflared
+cloudflared tunnel --url http://127.0.0.1:$PORT
+# prints e.g. https://random-words-1234.trycloudflare.com
+# remote MCP URL = that + /mcp
+```
+
+### Option B — ngrok (account authtoken, ngrok dashboard + inspector)
+
+One-time authtoken from your ngrok account. Free tier gives a random
+`*.ngrok-free.app` host per session.
+
+```sh
+brew install ngrok
+ngrok config add-authtoken <YOUR_NGROK_AUTHTOKEN>   # one time
+ngrok http $PORT
+# forwarding URL shown in the ngrok UI, e.g. https://abc123.ngrok-free.app
+# remote MCP URL = that + /mcp
+```
+
+### Option C — cftunn (your own Cloudflare domain, stable hostname)
+
+Wraps `cloudflared` to give a **stable** hostname on a domain you own
+in Cloudflare. Needs `cloudflared` + Cloudflare auth (interactive login
+or an API token with `Cloudflare Tunnel:Edit` + `DNS:Edit` +
+`Zone:Read`). See <https://github.com/thatjuan/cftunn>.
+
+```sh
+brew install cloudflared
+cloudflared tunnel login                                              # browser → cert.pem
+#   or: export CLOUDFLARE_API_TOKEN=<token>
+curl -fsSL https://raw.githubusercontent.com/thatjuan/cftunn/main/install.sh | bash
+cftunn $PORT amaro.example.com          # localhost:$PORT → https://amaro.example.com
+# remote MCP URL = https://amaro.example.com/mcp
+```
+
+`cftunn` creates/reuses a tunnel, sets the DNS CNAME, and forwards —
+the hostname survives restarts, unlike A and B.
+
 ## Namespaces
 
 | Namespace | What lives there | Sub-skill |
