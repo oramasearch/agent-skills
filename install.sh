@@ -105,7 +105,10 @@ fi
 available=""
 for d in "$SRC"/*/; do
   [ -f "${d}SKILL.md" ] || continue
-  [ -f "${d}install.sh" ] || continue
+  if [ ! -f "${d}install.sh" ]; then
+    printf 'install.sh: skipping %s — has SKILL.md but no install.sh\n' "$(basename "$d")" >&2
+    continue
+  fi
   available="$available $(basename "$d")"
 done
 available="$(printf '%s\n' $available | sort)"
