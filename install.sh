@@ -18,6 +18,7 @@ DEST="."              # where .claude/ and .agents/ get written (consumer projec
 WANT=""               # space-separated skill names; empty = all
 FROM=""               # local checkout to copy from instead of downloading (testing)
 LIST_ONLY=0
+FORCE=0               # install into a generic/home path without aborting
 
 TARGETS=".claude/skills .agents/skills"
 
@@ -42,6 +43,7 @@ Options:
   --dir <path>     Project root to install into (default: current directory).
   --ref <ref>      Branch, tag, or commit to pull (default: main).
   --list           List available skills and exit.
+  --force          Install even if the target looks like a generic/home path.
   --from <dir>     Copy from a local checkout instead of downloading (testing).
   -h, --help       Show this help.
 
@@ -63,6 +65,7 @@ while [ $# -gt 0 ]; do
     --from)     FROM="${2:-}"; shift 2;;
     --from=*)   FROM="${1#*=}"; shift;;
     --list|-l)  LIST_ONLY=1; shift;;
+    --force|-f) FORCE=1; shift;;
     -h|--help)  usage; exit 0;;
     *)          printf 'install.sh: unknown option: %s\n\n' "$1" >&2; usage >&2; exit 2;;
   esac
@@ -70,10 +73,57 @@ done
 
 [ -n "$DEST" ] || err "--dir must not be empty"
 
+# --- refuse generic / home install targets unless --force ---------------------
+# Resolve DEST to an absolute path (without requiring it to exist yet).
+if [ -d "$DEST" ]; then
+  ABS_DEST="$(cd "$DEST" && pwd)"
+else
+  case "$DEST" in
+    /*) ABS_DEST="$DEST" ;;
+    *)  ABS_DEST="$(pwd)/$DEST" ;;
+  esac
+fi
+ABS_DEST="${ABS_DEST%/}"; [ -n "$ABS_DEST" ] || ABS_DEST="/"
+
+is_generic_path() {
+  p="$1"
+  case "$p" in
+    "$HOME"|/|/Users|/home) return 0 ;;
+    /usr|/bin|/sbin|/etc|/var|/tmp|/opt|/root|/srv|/mnt|/sys|/proc|/dev) return 0 ;;
+    /Library|/System|/Applications|/private|/cores|/Volumes) return 0 ;;
+  esac
+  # standard, non-project subfolders directly under $HOME
+  if [ -n "${HOME:-}" ]; then
+    case "$p" in
+      "$HOME"/Desktop|"$HOME"/Documents|"$HOME"/Downloads|"$HOME"/Movies|"$HOME"/Music|"$HOME"/Pictures|"$HOME"/Public|"$HOME"/.config) return 0 ;;
+    esac
+  fi
+  return 1
+}
+
+if [ "$LIST_ONLY" -eq 0 ] && [ "$FORCE" -eq 0 ] && is_generic_path "$ABS_DEST"; then
+  cat >&2 <<EOF
+install.sh: refusing to install into a generic location:
+    $ABS_DEST
+
+Installing here puts .claude/skills/ and .agents/skills/ in a shared
+directory, so the skills apply to every coding-agent session you start
+from here — not what you usually want.
+
+Use a dedicated project folder instead:
+    mkdir -p ~/code/my-project && cd ~/code/my-project
+    curl -fsSL https://raw.githubusercontent.com/oramasearch/agent-skills/main/install.sh | sh
+
+Or target one explicitly:  ... | sh -s -- --dir ~/code/my-project
+Install here anyway:       ... | sh -s -- --force
+EOF
+  exit 3
+fi
+
 # --- resolve the source tree (download tarball, or use a local checkout) -------
 SRC=""
 TMP=""
-cleanup() { [ -n "$TMP" ] && rm -rf "$TMP"; }
+cleanup() { [ -n "$TMP" ] && rm -rf "$TMP"; return 0; }
 trap cleanup EXIT INT TERM
 
 if [ -n "$FROM" ]; then

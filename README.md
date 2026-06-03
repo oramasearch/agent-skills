@@ -31,6 +31,8 @@ This repository is designed for use with the [`skills` CLI](https://www.npmjs.co
 > mkdir -p ~/code/my-project && cd ~/code/my-project   # a real project folder
 > # …then run one of the installers below
 > ```
+>
+> The `curl | sh` installer **enforces this** — it aborts if you run it from `$HOME`, `/`, a system directory, or a standard home subfolder (Desktop/Documents/Downloads/…), and suggests a dedicated folder. Override with `--force` if you really mean it.
 
 Two ways to install — pick either. Both drop the same skill bundles into `./.claude/skills/<name>/` (Claude Code) and `./.agents/skills/<name>/` (Codex / compatible agents) in the current directory.
 
