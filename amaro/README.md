@@ -4,7 +4,15 @@ Teaches an AI agent to drive a running **Amaro** instance from the shell.
 
 ## Setup
 
-**1. Install the skill** (Node ≥ 18):
+**1. Install the skill.** Run from your project folder (not `$HOME`). Two options:
+
+`curl | sh` — no Node, installs for both Claude Code and Codex:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/oramasearch/agent-skills/main/install.sh | sh -s -- --skills amaro
+```
+
+`npx skills` (Node ≥ 18) — interactive picker, writes a `skills-lock.json`:
 
 ```sh
 npx skills add oramasearch/agent-skills --skill amaro
