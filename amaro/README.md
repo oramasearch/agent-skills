@@ -34,20 +34,18 @@ No manifest → desktop isn't running; you're cloud-REST-only.
 
 ## Connect a remote agent (tunnel)
 
-The MCP server is loopback-only — front it with a public tunnel so a remote agent can reach it (the manifest bearer token is still required).
+Front the loopback-only MCP server with a public tunnel so a remote agent can reach it (manifest bearer token still required; default port `57552`).
 
-**Let the skill do it.** Ask the agent to "expose the Amaro MCP server with a tunnel" and it follows the "Expose the MCP server to a remote agent" recipe in `SKILL.md` — it reads the port from the manifest and starts the tunnel for you.
+Ask the agent to "expose the Amaro MCP server with a tunnel" and it runs this for you — or do it manually:
 
-**Or set it up manually** (default port `57552`):
-
-cloudflared quick tunnel — no account, ephemeral `*.trycloudflare.com`:
+**[cloudflared](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/do-more-with-tunnels/trycloudflare/)** — no account, ephemeral `*.trycloudflare.com`:
 
 ```sh
 brew install cloudflared
 cloudflared tunnel --url http://127.0.0.1:57552
 ```
 
-ngrok — one-time authtoken, random `*.ngrok-free.app`:
+**[ngrok](https://ngrok.com/)** — one-time authtoken, random `*.ngrok-free.app`:
 
 ```sh
 brew install ngrok
@@ -55,7 +53,7 @@ ngrok config add-authtoken <YOUR_NGROK_AUTHTOKEN>
 ngrok http 57552
 ```
 
-cftunn — your Cloudflare domain, stable hostname:
+**[cftunn](https://github.com/thatjuan/cftunn)** — your Cloudflare domain, stable hostname:
 
 ```sh
 brew install cloudflared
