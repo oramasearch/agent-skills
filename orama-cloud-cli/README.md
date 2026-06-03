@@ -4,11 +4,21 @@ Teaches an AI agent to drive the **Orama Cloud CLI** (the `orama` binary, projec
 
 ## Install
 
+Run from your project folder (not `$HOME`). Two options.
+
+`curl | sh` — no Node, installs for both Claude Code and Codex:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/oramasearch/agent-skills/main/install.sh | sh -s -- --skills orama-cloud-cli
+```
+
+`npx skills` (Node ≥ 18) — interactive picker, writes a `skills-lock.json`:
+
 ```sh
 npx skills add oramasearch/agent-skills --skill orama-cloud-cli
 ```
 
-Installs the skill into your agent. The interactive picker uses **↑/↓** to move, **Space** to toggle an agent (Claude Code, Cursor, …), **Enter** to confirm. Non-interactive: add `--agent claude -y` (or `--all` for every skill + agent). Needs Node ≥ 18.
+The picker uses **↑/↓** to move, **Space** to toggle an agent (Claude Code, Cursor, …), **Enter** to confirm. Non-interactive: add `--agent claude -y` (or `--all` for every skill + agent).
 
 ## What it does
 
