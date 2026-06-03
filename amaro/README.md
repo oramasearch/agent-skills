@@ -2,13 +2,27 @@
 
 Teaches an AI agent to drive a running **Amaro** instance from the shell — inspect/run data apps, manage connectors, drive the live desktop UI, stream telemetry, and control lifecycle — via the headless `amaro` CLI (or raw HTTP-MCP); triggers on `amaro` CLI mentions or any of those tasks.
 
-## Install
+## Setup
+
+**1. Install the skill** (Node ≥ 18):
 
 ```sh
 npx skills add oramasearch/agent-skills --skill amaro
 ```
 
-Non-interactive: add `--agent claude -y` (or `--all`). Needs Node ≥ 18. See **[GETTING-STARTED.md](GETTING-STARTED.md)** for the full setup walkthrough.
+Picker: **↑/↓** move, **Space** toggle agent, **Enter** confirm. Non-interactive: add `--agent claude -y` (or `--all`).
+
+**2. Launch the Amaro desktop.** On launch it writes an MCP manifest (mode 0600) carrying the HTTP-MCP `url`, bearer `token`, `pid`, `ipc_socket`, and granted `scopes`:
+
+| Platform | Manifest path |
+|---|---|
+| macOS | `~/Library/Application Support/com.amaro.desktop/mcp-server.json` |
+| Linux | `~/.local/share/com.amaro.desktop/mcp-server.json` |
+| Windows | `%APPDATA%\com.amaro.desktop\mcp-server.json` |
+
+No manifest → desktop isn't running; you're cloud-REST-only.
+
+**3. Verify:** `amaro status --json` confirms transport, env, and auth. No CLI on `PATH`? Hit the manifest's MCP URL directly with `curl` + `jq`.
 
 ## FAQ
 
@@ -32,5 +46,10 @@ Shell access and manifest read. Destructive ops (`delete` / `reset` / `lifecycle
 
 **Already installed?**\
 Re-run `add`, or `npx skills update amaro`. Remove with `npx skills remove amaro`.
+
+## Going deeper
+
+- [`SKILL.md`](SKILL.md) — router: transports, bootstrap, output contract, namespaces, workflows.
+- [`references/`](references/) — per-namespace deep-dives (`auth`, `app`, `connector`, `cache`, `chat`, `local`, `telemetry`, `lifecycle`).
 
 > Several surfaces are documented-but-partial — see "Maturity notes" in `SKILL.md`.
