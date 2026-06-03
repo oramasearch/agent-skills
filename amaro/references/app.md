@@ -86,4 +86,5 @@ amaro app export <app_id> --json
 ```
 
 Returns the data-app row with its source script. Use this to extract
-an app for hand-off ("let me give this code to a real eng").
+an app for hand-off ("let me give this code to a real eng" — the
+issue's original framing).

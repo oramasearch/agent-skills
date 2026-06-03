@@ -54,9 +54,10 @@ the desktop started.
 amaro telemetry interpret <turn_id> --json
 ```
 
-Runs the Performance Interpreter against a specific chat turn. Returns
-the interpretation as JSON; the desktop's chat session will also pick
-up the interpretation as a synthesised assistant turn.
+Runs the Performance Interpreter ([`amaro#685`](https://github.com/oramasearch/amaro/pull/685))
+against a specific chat turn. Returns the interpretation as JSON; the
+desktop's chat session will also pick up the interpretation as a
+synthesised assistant turn.
 
 ## Snapshot
 
