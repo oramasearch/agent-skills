@@ -8,6 +8,8 @@ Teaches an AI agent to drive a running **Amaro** instance from the shell via the
 npx skills add oramasearch/agent-skills --skill amaro
 ```
 
+Installs the skill into your agent. The interactive picker uses **↑/↓** to move, **Space** to toggle an agent (Claude Code, Cursor, …), **Enter** to confirm. Non-interactive: add `--agent claude -y` (or `--all` for every skill + agent). Needs Node ≥ 18.
+
 ## What it does
 
 `amaro` is a headless Rust binary that drives Amaro over three transports — cloud REST (the teams service), local MCP (the desktop's inbound server), and Tauri-IPC (a running desktop's UDS) — auto-selecting one based on whether the desktop is running. This skill gives an agent the operating surface:
@@ -35,6 +37,20 @@ Mentions of the `amaro` CLI, "amaro app", "drive amaro", "amaro headless", "amar
 | `references/telemetry.md` | Tail envelopes, cost meter, Performance Interpreter, portable snapshot. |
 | `references/lifecycle.md` | Process control — restart / quit / reset / feature-flag (destructive; `--yes` + `destructive` scope). |
 
-## Requirements
+## FAQ
 
-A running Amaro desktop and/or a reachable teams service, plus the `amaro` binary on the host (or the ability to call the desktop's HTTP MCP endpoint directly using the manifest's URL + token). The skill itself is documentation and assumes the agent can shell out. Several surfaces are documented-but-partial — see the "Maturity notes" in `SKILL.md`.
+**What does the skill use?** The `amaro` CLI (a headless Rust binary). For the no-CLI path, `curl` + `jq` against the desktop's HTTP-MCP endpoint. It talks to a running Amaro desktop (manifest / IPC / local-MCP) or a cloud teams service (REST).
+
+**What do I need to *use* it?** Either the `amaro` binary on `PATH`, or `curl` + `jq` to hit the manifest's MCP URL — plus a running Amaro desktop and/or teams-service credentials. The skill itself is just docs, no runtime deps.
+
+**What gets installed, and where?** Only the skill's docs — `SKILL.md`, `README.md`, `references/*.md`. Project-level into `.claude/skills/amaro/` (and any other agents you pick); user-level into `~/.claude/skills/amaro/` with `-g`. Tracked in `skills-lock.json`. No binary, no build, no Rust toolchain.
+
+**Prereqs to *install* the skill?** Node ≥ 18 and `npx`. Nothing else.
+
+**What commands does it run?** Stats the desktop manifest, then `amaro status|app|connector|chat|local|telemetry|lifecycle …`; optionally `curl` to the MCP endpoint. Passes `--json` when acting on output.
+
+**What permissions are needed?** The agent must be allowed to run shell commands and read the manifest file. Auth is a bearer token via `amaro auth login` or `$AMARO_TOKEN`. Destructive ops (`delete` / `reset` / `lifecycle quit`) require `--yes` plus the `destructive` token scope.
+
+**Already have it installed?** Re-running `add` updates it; or `npx skills update amaro`. Remove with `npx skills remove amaro`.
+
+> Several surfaces are documented-but-partial — see the "Maturity notes" in `SKILL.md`.
