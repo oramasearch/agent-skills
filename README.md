@@ -20,6 +20,7 @@ This repository is designed for use with the [`skills` CLI](https://www.npmjs.co
 | Skill | Description |
 |-------|-------------|
 | [orama-cloud-cli](./orama-cloud-cli/) | Drive the Orama Cloud CLI (`orama`) to provision an account, index a CSV or `postgres://` source, and run search — fully from an agent context, no dashboard, no human in the loop. Covers the locked `--json` / `--agent` contract, the frozen exit-code table, env resolution, search modes, and cold-start auto-signup. |
+| [amaro](./amaro/) | Drive a running Amaro instance from the shell via the `amaro` headless CLI — inspect/run data apps, manage connectors, drive the live desktop UI, stream telemetry, control lifecycle. Router skill over three transports (cloud REST / local MCP / Tauri-IPC) with eight namespace reference files and a versioned `--json` output contract. |
 
 # Getting Started
 
