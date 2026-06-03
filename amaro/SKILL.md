@@ -7,7 +7,7 @@ description: Drive a running Amaro instance from Claude Code using the `amaro` C
 
 `amaro` is the headless Rust binary that lets you drive Amaro from the
 shell or from agentic tools (Claude Code, Cursor, scripts). It speaks
-three transports — cloud REST against `services/teams`, local MCP
+three transports — cloud REST against the teams service, local MCP
 against the desktop's inbound server, and Tauri-IPC against a running
 desktop's UDS — and picks one automatically based on whether the
 desktop is running.
@@ -47,17 +47,13 @@ than this file does.
    transports are off the table; you're cloud-REST-only.
 
 2. **Is the `amaro` CLI installed?** — `command -v amaro`. If missing,
-   you have three zero-friction options:
-   - `just cli <args>` from `modules/amaro` runs the CLI from source
-     without installing it on `PATH`.
-   - `just cli-install` (in `modules/amaro`) builds + installs to
-     `~/.cargo/bin/amaro`. Same as
-     `cd modules/amaro && cargo install --path crates/amaro-cli`.
+   you have two options:
+   - Install the `amaro` binary onto `PATH` for your platform, then
+     re-run.
    - Skip the CLI entirely and hit the HTTP MCP endpoint directly
      using the URL + token from the manifest (see next section).
 
-3. **Then `amaro status --json`** (or `just cli status --json`) to
-   confirm transport + env + auth.
+3. **Then `amaro status --json`** to confirm transport + env + auth.
 4. **Discover the surface** — `amaro --help`. Then drill in with
    `amaro <namespace> --help`. Don't carry the flag list in context;
    the help output is authoritative.
@@ -115,7 +111,7 @@ to wire the desktop into another tool that already speaks MCP.
 | `amaro auth` | login / logout / whoami / mint scoped tokens | [auth.md](references/auth.md) |
 | `amaro app` | data apps — list / get / run / status / create / delete | [app.md](references/app.md) |
 | `amaro connector` | data sources — list / add / test / reprofile / delete | [connector.md](references/connector.md) |
-| `amaro cache` | routing-tier badge + saved-time signal (per `amaro#962`) | [cache.md](references/cache.md) |
+| `amaro cache` | routing-tier badge + saved-time signal | [cache.md](references/cache.md) |
 | `amaro chat` | sessions — list / send / replay / history | [chat.md](references/chat.md) |
 | `amaro local` | drive the running desktop (screenshot, navigate, snapshot) | [local.md](references/local.md) |
 | `amaro telemetry` | tail envelopes, cost meter, interpret a turn, snapshot | [telemetry.md](references/telemetry.md) |
@@ -168,8 +164,7 @@ amaro telemetry tail --envelope-kind chat.llm.response --last 20 --json
 amaro telemetry interpret <turn_id> --json
 ```
 
-Returns the Performance Interpreter's analysis ([`amaro#685`](https://github.com/oramasearch/amaro/pull/685))
-for the given turn.
+Returns the Performance Interpreter's analysis for the given turn.
 
 ## When to escalate vs. ask the user
 
@@ -195,11 +190,3 @@ these as documented-but-partial:
   currently accepts `--token` / `$AMARO_TOKEN`.
 - `amaro connector reprofile` is not yet exposed over MCP; it returns a
   clean "use REST" error under `--transport mcp`.
-
-## Where to read more
-
-- ADR: [`docs/decisions/headless-cli.md`](https://github.com/oramasearch/amaro/blob/main/docs/decisions/headless-cli.md) (in amaro repo)
-- Research: [`docs/discussions/wrangler-architecture-research.md`](https://github.com/oramasearch/amaro/blob/main/docs/discussions/wrangler-architecture-research.md)
-- Epic: [`amaro#992`](https://github.com/oramasearch/amaro/issues/992)
-- Runbook: [`docs/runbooks/headless-amaro-cli.md`](https://github.com/oramasearch/amaro/blob/main/docs/runbooks/headless-amaro-cli.md) (copy-paste configs for Claude Desktop / Cursor / Claude Code / shell / browser extension)
-- Canonical docs subsystem: [`amaro-docs/docs/modules/amaro/headless/`](https://github.com/oramasearch/amaro-docs/tree/main/docs/modules/amaro/headless)
