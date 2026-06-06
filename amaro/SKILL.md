@@ -24,6 +24,8 @@ than this file does.
 - The user wants to drive the running desktop UI from the shell (take
   a screenshot, navigate to a route, snapshot local state).
 - The user wants to inspect cache routing or saved-time signals.
+- The user wants to drive the local data-node sidecar — create/search
+  a named full-text index, add documents (`amaro datanode …`).
 - The user wants to tail telemetry, run the Performance Interpreter,
   or check the cost meter.
 - The user wants to control desktop lifecycle (restart, reset, feature
@@ -207,6 +209,7 @@ the hostname survives restarts, unlike A and B.
 | `amaro app` | data apps — list / get / run / status / create / delete | [app.md](references/app.md) |
 | `amaro connector` | data sources — list / add / test / reprofile / delete | [connector.md](references/connector.md) |
 | `amaro cache` | routing-tier badge + saved-time signal | [cache.md](references/cache.md) |
+| `amaro datanode` | drive the local `orama-installer serve` search sidecar — named indexes, doc ingest, BM25F search | [datanode.md](references/datanode.md) |
 | `amaro chat` | sessions — list / send / replay / history | [chat.md](references/chat.md) |
 | `amaro local` | drive the running desktop (screenshot, navigate, snapshot) | [local.md](references/local.md) |
 | `amaro telemetry` | tail envelopes, cost meter, interpret a turn, snapshot | [telemetry.md](references/telemetry.md) |
